@@ -18,7 +18,9 @@ class User(db.Model):
 
     password = db.Column(db.Text, nullable=False,)
 
-    savedOrgs = db.relationship("Organization", secondary="org_likes")
+    saved_orgs = db.relationship("Organization", secondary="org_likes")
+
+    saved_pets = db.relationship("Pet", secondary="pet_likes")
 
     @classmethod
     def signup(cls, username, email, password, image_url):
@@ -29,9 +31,7 @@ class User(db.Model):
 
         hashed_pwd = bcrypt.generate_password_hash(password).decode("UTF-8")
 
-        user = User(
-            username=username, email=email, password=hashed_pwd, image_url=image_url,
-        )
+        user = User(username=username, email=email, password=hashed_pwd)
 
         db.session.add(user)
         return user
